@@ -1,0 +1,4 @@
+// .vscode/settings.json
+{
+    "python.envFile": "${workspaceFolder}/.env"
+}

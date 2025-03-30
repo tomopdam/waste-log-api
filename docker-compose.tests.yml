@@ -1,0 +1,46 @@
+services:
+  postgres_tests:
+    image: postgres:17-alpine
+    container_name: postgres_tests
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpassword
+      - POSTGRES_DB=testdb
+    tmpfs:
+      - /var/lib/postgresql/data  # temporary storage for testing
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser -d testdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_tests_network
+
+  api_tests:
+    build:
+      context: .
+      dockerfile: Dockerfile-tests
+    container_name: api_dev_tests
+    volumes:
+      - ./app:/waste-api/app
+      - ./tests:/waste-api/tests
+      - ./pytest.ini:/waste-api/pytest.ini
+    depends_on:
+      postgres_tests:
+        condition: service_healthy
+    environment:
+      - ENVIRONMENT=tests
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpassword
+      - POSTGRES_HOST=postgres_tests
+      - POSTGRES_DB=testdb
+      - PYTHONPATH=/waste-api
+      - PYTHONDONTWRITEBYTECODE=1
+    working_dir: /waste-api/app
+    command: pytest -c /waste-api/pytest.ini /waste-api/tests
+    networks:
+      - app_tests_network
+
+networks:
+  app_tests_network:
+    driver: bridge

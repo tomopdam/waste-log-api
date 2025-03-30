@@ -1,0 +1,8 @@
+FROM python:3.11-slim
+
+WORKDIR /waste-api
+
+COPY ./requirements.txt ./requirements-tests.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-tests.txt
+
+# CMD ["pytest", "-v", "--cov=app", "--cov-report=term-missing", "--cov-report=html", "tests/"]
