@@ -33,15 +33,6 @@ Example RESTful API for a waste logging management service.
 - Some models include automatic datetime fields, created_at and updated_at
 - Combinatory usage of team id and user role allow fluid permission checks for employees and managers
 
-## Further development notes / tech debt
-
-1. Scale by splitting into separate microservices: 1) write waste log, and 2) management/analytics
-2. Scale by replicating postgres databases into WRITE -> READ + READ + READ (and so on)
-3. All database operations should be separated from route logic
-4. Refactor permissions implementation
-5. Finish applying recommendations from `poetry run flake8 .`
-6. Improved docstring coverage, comments, and so forth
-
 ## Linting
 
 1. Install poetry and add it to the system-wide environment variables.
@@ -53,3 +44,12 @@ Example RESTful API for a waste logging management service.
 Run: `docker compose -f docker-compose.tests.yml up --abort-on-container-exit`.
 
 Tests output will be in the terminal and in `tests/htmlcov/`.
+
+## Further development notes / tech debt
+
+1. Scale by splitting into separate microservices: 1) write waste log, and 2) management/analytics
+2. Scale by replicating postgres databases into WRITE -> READ + READ + READ (and so on)
+3. All database operations should be separated from route logic
+4. Refactor permissions implementation
+5. Finish applying recommendations from `poetry run flake8 .`
+6. Improved docstring coverage, comments, and so forth
